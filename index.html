@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CIITM | Next-Gen Academic ERP & Learning Hub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Plus Jakarta Sans', 'sans-serif'] }
+        }
+      }
+    }
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; transition: background-color 0.3s ease, color 0.3s ease; }
+    .bento-card { transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
+    .bento-card:hover { transform: translateY(-3px); }
+  </style>
+</head>
+<body class="min-h-screen bg-[#f8fafc] dark:bg-[#030712] text-slate-800 dark:text-slate-100 antialiased flex flex-col justify-between selection:bg-sky-500 selection:text-white">
+
+  <!-- TOP ANNOUNCEMENT BAR -->
+  <!-- TOP BRANDING RIBBON -->
+  <div class="bg-slate-950 text-slate-300 text-xs py-2 px-4 border-b border-slate-800">
+    <div class="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-2">
+      <span class="flex items-center gap-2 font-medium text-slate-300">
+        <i data-lucide="graduation-cap" class="w-4 h-4 text-sky-400"></i>
+        Chhotanagpur Institute of Information Technology & Management
+      </span>
+      <div class="flex items-center gap-5">
+        <a href="https://ciitm.in" target="_blank" class="hover:text-sky-400 font-medium transition-colors flex items-center gap-1.5">
+          <i data-lucide="globe" class="w-3.5 h-3.5 text-sky-400"></i> Main Website
+        </a>
+        <button type="button" onclick="toggleModal('helpdeskModal')" class="hover:text-sky-400 font-medium transition-colors flex items-center gap-1.5">
+          <i data-lucide="headphones" class="w-3.5 h-3.5 text-amber-400"></i> Helpdesk
+        </button>
+        <button type="button" onclick="toggleTheme()" class="px-2.5 py-1 bg-slate-900 hover:bg-slate-800 text-amber-400 dark:text-sky-400 border border-slate-800 rounded-lg font-bold flex items-center gap-1.5 transition-all">
+          <i id="themeIcon" data-lucide="sun" class="w-3.5 h-3.5"></i>
+          <span id="themeLabel" class="text-[11px] text-slate-200">Light Mode</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CLEAN SLEEK HEADER -->
+  <header class="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 sticky top-0 z-40 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+      
+      <!-- LOGO & TITLE SECTION -->
+      <a href="#" class="flex items-center gap-3 group">
+        <img src="logo.png" alt="CIITM Logo" class="h-10 w-auto object-contain transition-transform group-hover:scale-105" onerror="this.onerror=null; this.src='https://ui-avatars.com/api/?name=CIITM&background=0284c7&color=fff&bold=true';">
+        <div class="border-l border-slate-200 dark:border-slate-800 pl-3">
+          <h1 class="text-lg font-black tracking-wider text-slate-900 dark:text-slate-100 leading-none">CIITM</h1>
+        </div>
+      </a>
+
+      <!-- CENTER NAVIGATION LINKS -->
+      <nav class="hidden md:flex items-center gap-6 text-xs font-bold text-slate-600 dark:text-slate-300">
+        <a href="#" class="text-sky-600 dark:text-sky-400 font-extrabold flex items-center gap-1">
+          Home
+        </a>
+        <button type="button" onclick="toggleModal('studentModal')" class="hover:text-sky-600 dark:hover:text-sky-400 transition-colors">
+          Student Portal
+        </button>
+        <button type="button" onclick="toggleModal('admissionModal')" class="hover:text-sky-600 dark:hover:text-sky-400 transition-colors">
+          Admissions 2026
+        </button>
+        <a href="#repository" class="hover:text-sky-600 dark:hover:text-sky-400 transition-colors">
+          Digital Repository
+        </a>
+      </nav>
+
+      <!-- RIGHT ACTION BUTTONS -->
+      <div class="flex items-center gap-2.5">
+        <button type="button" onclick="toggleModal('studentModal')" class="px-3.5 py-2 text-xs font-bold bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-100 rounded-xl transition-all border border-slate-200 dark:border-slate-700">
+          Student Portal
+        </button>
+        <button type="button" onclick="toggleModal('facultyModal')" class="px-3.5 py-2 text-xs font-bold bg-sky-600 hover:bg-sky-500 text-white rounded-xl transition-all shadow-md shadow-sky-600/20">
+          Faculty Portal
+        </button>
+      </div>
+
+    </div>
+  </header>
+  <!-- MAIN BENTO CONTAINER -->
+  <main class="max-w-7xl mx-auto px-4 py-8 flex-1 w-full space-y-8">
+    
+    <!-- HERO BENTO BANNER -->
+    <section class="relative rounded-3xl p-8 md:p-10 bg-slate-900 dark:bg-[#070c18] text-white border border-slate-800 shadow-2xl overflow-hidden">
+      <!-- Glow Gradients -->
+      <div class="absolute -right-20 -bottom-20 w-96 h-96 bg-sky-500/20 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="absolute -left-20 -top-20 w-96 h-96 bg-purple-500/15 rounded-full blur-3xl pointer-events-none"></div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center relative z-10">
+        <div class="lg:col-span-2 space-y-5">
+          <div class="inline-flex items-center gap-2 px-3 py-1 bg-white/10 backdrop-blur-md rounded-full border border-white/10 text-xs font-bold text-sky-300">
+            <i data-lucide="zap" class="w-3.5 h-3.5 text-amber-400"></i> Smart Academic Command Center
+          </div>
+          <h2 class="text-3xl md:text-5xl font-black tracking-tight leading-tight">
+            Learn, Track & Build Your Academic Future.
+          </h2>
+          <p class="text-slate-300 text-sm max-w-xl leading-relaxed">
+            All-in-one portal for CIITM students and faculty. Access verified examination results, digital circulars, syllabus notes, and instant service requests.
+          </p>
+
+          <!-- MODERN COMMAND SEARCH -->
+          <div class="pt-3 max-w-lg">
+            <div class="relative flex items-center">
+              <i data-lucide="search" class="w-4 h-4 absolute left-4 text-slate-400"></i>
+              <input type="text" id="repoSearch" placeholder="Type to search BCA 3rd Sem results, syllabus, notices..." class="w-full bg-slate-950/80 border border-slate-700/80 rounded-2xl pl-11 pr-24 py-3.5 text-xs text-slate-100 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20 transition-all shadow-inner">
+              <span class="absolute right-3 px-2 py-1 bg-slate-800 text-[10px] font-mono font-bold text-slate-400 rounded-lg border border-slate-700">⌘ Search</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- QUICK ADMISSION WIDGET -->
+        <div class="bg-gradient-to-br from-slate-800/90 to-slate-900/90 border border-slate-700/80 p-6 rounded-2xl shadow-xl space-y-4 backdrop-blur-md">
+          <div class="flex justify-between items-center">
+            <span class="text-xs font-bold text-sky-400 uppercase tracking-wider">Admissions 2026</span>
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+          </div>
+          <h3 class="text-lg font-black text-white">Join CIITM Tech Community</h3>
+          <p class="text-xs text-slate-300 leading-relaxed">Applications for BCA, BBA, and BSc IT programs are currently active.</p>
+          <button type="button" onclick="toggleModal('admissionModal')" class="w-full py-3 bg-gradient-to-r from-sky-500 to-indigo-600 hover:from-sky-400 hover:to-indigo-500 text-white font-extrabold rounded-xl text-xs transition-all shadow-lg shadow-sky-500/20">
+            Apply Online ➔
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- BENTO GRID SYSTEM -->
+    <section class="grid grid-cols-1 md:grid-cols-4 gap-5">
+      
+      <!-- BENTO CARD 1: STUDENT PORTAL -->
+      <div onclick="toggleModal('studentModal')" class="bento-card cursor-pointer p-6 bg-white dark:bg-[#0b0f19] border border-slate-200/80 dark:border-slate-800/80 rounded-3xl space-y-3 shadow-sm hover:border-sky-500/50">
+        <div class="w-10 h-10 bg-sky-500/10 text-sky-500 rounded-2xl flex items-center justify-center font-bold">
+          <i data-lucide="user-check" class="w-5 h-5"></i>
+        </div>
+        <h4 class="text-sm font-black text-slate-900 dark:text-slate-100">Student Portal</h4>
+        <p class="text-xs text-slate-500 dark:text-slate-400">Leave applications, NOC approvals & grievance status tracking.</p>
+        <span class="text-[11px] font-bold text-sky-500 inline-flex items-center gap-1 pt-1">Open Dashboard ➔</span>
+      </div>
+
+      <!-- BENTO CARD 2: RESULTS & SCORECARDS -->
+      <div onclick="filterCategory('results')" class="bento-card cursor-pointer p-6 bg-white dark:bg-[#0b0f19] border border-slate-200/80 dark:border-slate-800/80 rounded-3xl space-y-3 shadow-sm hover:border-emerald-500/50">
+        <div class="w-10 h-10 bg-emerald-500/10 text-emerald-500 rounded-2xl flex items-center justify-center font-bold">
+          <i data-lucide="trophy" class="w-5 h-5"></i>
+        </div>
+        <h4 class="text-sm font-black text-slate-900 dark:text-slate-100">Exam Scorecards</h4>
+        <p class="text-xs text-slate-500 dark:text-slate-400">Instant semester results, marksheets & fail/pass verification.</p>
+        <span class="text-[11px] font-bold text-emerald-500 inline-flex items-center gap-1 pt-1">View Scorecards ➔</span>
+      </div>
+
+      <!-- BENTO CARD 3: FACULTY SUITE -->
+      <div onclick="toggleModal('facultyModal')" class="bento-card cursor-pointer p-6 bg-white dark:bg-[#0b0f19] border border-slate-200/80 dark:border-slate-800/80 rounded-3xl space-y-3 shadow-sm hover:border-amber-500/50">
+        <div class="w-10 h-10 bg-amber-500/10 text-amber-500 rounded-2xl flex items-center justify-center font-bold">
+          <i data-lucide="shield-check" class="w-5 h-5"></i>
+        </div>
+        <h4 class="text-sm font-black text-slate-900 dark:text-slate-100">Faculty Suite</h4>
+        <p class="text-xs text-slate-500 dark:text-slate-400">Student credentials generator, result wizard & circular publisher.</p>
+        <span class="text-[11px] font-bold text-amber-500 inline-flex items-center gap-1 pt-1">Manage Suite ➔</span>
+      </div>
+
+      <!-- BENTO CARD 4: HELPDESK -->
+      <div onclick="toggleModal('helpdeskModal')" class="bento-card cursor-pointer p-6 bg-white dark:bg-[#0b0f19] border border-slate-200/80 dark:border-slate-800/80 rounded-3xl space-y-3 shadow-sm hover:border-purple-500/50">
+        <div class="w-10 h-10 bg-purple-500/10 text-purple-500 rounded-2xl flex items-center justify-center font-bold">
+          <i data-lucide="headphones" class="w-5 h-5"></i>
+        </div>
+        <h4 class="text-sm font-black text-slate-900 dark:text-slate-100">Support Helpline</h4>
+        <p class="text-xs text-slate-500 dark:text-slate-400">Admissions, exam cell & ERP technical support contacts.</p>
+        <span class="text-[11px] font-bold text-purple-500 inline-flex items-center gap-1 pt-1">Get Help ➔</span>
+      </div>
+
+    </section>
+
+    <!-- MAIN REPOSITORY & BULLETIN GRID -->
+    <section id="repository" class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      
+      <!-- LEFT: DIGITAL REPOSITORY HUB (2 COLS) -->
+      <div class="lg:col-span-2 bg-white dark:bg-[#0b0f19] border border-slate-200/80 dark:border-slate-800/80 rounded-3xl p-6 shadow-sm space-y-5">
+        <div class="flex justify-between items-center">
+          <div>
+            <h3 class="font-extrabold text-slate-900 dark:text-slate-100 text-base">Digital Repository Hub</h3>
+            <p class="text-xs text-slate-500 dark:text-slate-400">Verified campus circulars, syllabus files & exam scorecards</p>
+          </div>
+        </div>
+
+        <!-- CATEGORY PILLS -->
+        <div class="flex flex-wrap gap-2 pt-1 border-b border-slate-100 dark:border-slate-800/80 pb-4">
+          <button type="button" onclick="filterCategory('all', this)" class="category-btn px-4 py-1.5 bg-sky-500 text-white text-xs font-bold rounded-xl shadow-md shadow-sky-500/20">All Files</button>
+          <button type="button" onclick="filterCategory('results', this)" class="category-btn px-4 py-1.5 bg-slate-100 dark:bg-slate-800/60 text-slate-700 dark:text-slate-300 text-xs font-bold rounded-xl hover:bg-slate-200">Results</button>
+          <button type="button" onclick="filterCategory('circulars', this)" class="category-btn px-4 py-1.5 bg-slate-100 dark:bg-slate-800/60 text-slate-700 dark:text-slate-300 text-xs font-bold rounded-xl hover:bg-slate-200">Circulars</button>
+          <button type="button" onclick="filterCategory('study', this)" class="category-btn px-4 py-1.5 bg-slate-100 dark:bg-slate-800/60 text-slate-700 dark:text-slate-300 text-xs font-bold rounded-xl hover:bg-slate-200">Study Materials</button>
+        </div>
+
+        <div id="repoList" class="space-y-3 pt-1">
+          <p class="text-xs text-slate-400">Loading synced repository files...</p>
+        </div>
+      </div>
+
+      <!-- RIGHT: CAMPUS BULLETIN SIDEBAR -->
+      <div class="space-y-6">
+        <div class="bg-white dark:bg-[#0b0f19] border border-slate-200/80 dark:border-slate-800/80 rounded-3xl p-6 shadow-sm space-y-4">
+          <div class="flex items-center gap-2.5 pb-2 border-b border-slate-100 dark:border-slate-800/80">
+            <div class="p-2 bg-amber-500/10 text-amber-500 rounded-xl">
+              <i data-lucide="bell" class="w-4 h-4"></i>
+            </div>
+            <div>
+              <h3 class="font-extrabold text-slate-900 dark:text-slate-100 text-sm">Campus Bulletin</h3>
+              <p class="text-[11px] text-slate-500 dark:text-slate-400">Real-time official updates</p>
+            </div>
+          </div>
+          <div id="noticeBoardList" class="space-y-3 text-xs">
+            <p class="text-slate-400">Loading active notices...</p>
+          </div>
+        </div>
+      </div>
+
+    </section>
+  </main>
+
+  <!-- ALL MODALS (STUDENT, FACULTY, ADMISSION, HELPDESK) -->
+  <!-- STUDENT AUTH MODAL -->
+  <div id="studentModal" class="hidden fixed inset-0 bg-slate-950/70 backdrop-blur-md z-50 flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-[#0b0f19] border border-slate-200 dark:border-slate-800 rounded-3xl w-full max-w-md p-6 relative shadow-2xl">
+      <button type="button" onclick="toggleModal('studentModal')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"><i data-lucide="x" class="w-5 h-5"></i></button>
+      <form id="studentLoginForm" onsubmit="event.preventDefault(); handleStudentAuth();">
+        <h3 class="text-base font-extrabold text-slate-900 dark:text-slate-100">Student Authentication</h3>
+        <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 font-medium">Log in using official @ciitm.in email credentials.</p>
+        <div class="space-y-4 mt-6">
+          <div>
+            <label for="studentEmail" class="text-xs font-bold text-slate-700 dark:text-slate-300">CIITM Email</label>
+            <input type="email" id="studentEmail" autocomplete="username" placeholder="student@ciitm.in" required class="w-full mt-1 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-800 dark:text-slate-200 focus:outline-none focus:border-sky-500">
+          </div>
+          <div>
+            <label for="studentPass" class="text-xs font-bold text-slate-700 dark:text-slate-300">Password / Temp Password</label>
+            <input type="password" id="studentPass" autocomplete="current-password" required class="w-full mt-1 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-800 dark:text-slate-200 focus:outline-none focus:border-sky-500">
+          </div>
+          <button type="submit" class="w-full py-2.5 bg-sky-500 hover:bg-sky-400 text-white rounded-xl text-xs font-bold shadow-lg shadow-sky-500/20">Login to Dashboard</button>
+        </div>
+      </form>
+
+      <form id="passwordResetForm" class="hidden" onsubmit="event.preventDefault(); updatePassword();">
+        <h3 class="text-base font-extrabold text-amber-500">Account Activation Required</h3>
+        <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 font-medium">Create permanent password to activate account.</p>
+        <input type="email" id="resetUserEmail" name="username" autocomplete="username" class="hidden" aria-hidden="true">
+        <div class="space-y-4 mt-6">
+          <div>
+            <label for="newPass" class="text-xs font-bold text-slate-700 dark:text-slate-300">New Password</label>
+            <input type="password" id="newPass" name="new-password" autocomplete="new-password" required class="w-full mt-1 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-800 dark:text-slate-200 focus:outline-none focus:border-amber-500">
+          </div>
+          <div>
+            <label for="confirmPass" class="text-xs font-bold text-slate-700 dark:text-slate-300">Confirm Password</label>
+            <input type="password" id="confirmPass" name="confirm-password" autocomplete="new-password" required class="w-full mt-1 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-800 dark:text-slate-200 focus:outline-none focus:border-amber-500">
+          </div>
+          <button type="submit" class="w-full py-2.5 bg-amber-500 hover:bg-amber-400 text-white rounded-xl text-xs font-bold shadow-lg shadow-amber-500/20">Activate Account</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- STUDENT DASHBOARD & SERVICES MODAL -->
+  <div id="studentDashboardModal" class="hidden fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-[#0b0f19] border border-slate-200 dark:border-slate-800 rounded-3xl w-full max-w-4xl max-h-[90vh] overflow-y-auto p-6 relative shadow-2xl">
+      <button type="button" onclick="toggleModal('studentDashboardModal')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"><i data-lucide="x" class="w-5 h-5"></i></button>
+
+      <div class="border-b border-slate-200 dark:border-slate-800 pb-4 mb-6">
+        <h2 class="text-lg font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
+          <i data-lucide="layout-dashboard" class="w-5 h-5 text-sky-500"></i> Student Services Hub
+        </h2>
+        <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Logged in as: <span id="activeStudentEmail" class="text-sky-500 font-mono font-bold">student@ciitm.in</span></p>
+      </div>
+
+      <div class="flex gap-2 border-b border-slate-200 dark:border-slate-800 pb-3 mb-6 overflow-x-auto">
+        <button type="button" onclick="switchStudentTab('servicesTab')" class="px-3.5 py-1.5 text-xs font-bold bg-sky-500 text-white rounded-xl">Apply for Services</button>
+        <button type="button" onclick="switchStudentTab('appTrackerTab')" class="px-3.5 py-1.5 text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 rounded-xl">My Application Status</button>
+      </div>
+
+      <div id="servicesTab" class="student-tab-content space-y-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+          <div class="p-4 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-2xl space-y-2">
+            <h4 class="font-bold text-slate-800 dark:text-slate-200">Application for Absence</h4>
+            <p class="text-slate-500 dark:text-slate-400">Submit leave requests directly to academic cell.</p>
+            <button type="button" onclick="openServiceForm('absence')" class="mt-2 px-3.5 py-1.5 bg-sky-500 text-white rounded-lg font-bold">Apply Now</button>
+          </div>
+          <div class="p-4 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-2xl space-y-2">
+            <h4 class="font-bold text-slate-800 dark:text-slate-200">Apply for Internship Approval</h4>
+            <p class="text-slate-500 dark:text-slate-400">Request NOC and internship clearance.</p>
+            <button type="button" onclick="openServiceForm('internship')" class="mt-2 px-3.5 py-1.5 bg-sky-500 text-white rounded-lg font-bold">Apply Now</button>
+          </div>
+          <div class="p-4 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-2xl space-y-2">
+            <h4 class="font-bold text-slate-800 dark:text-slate-200">Grievance Redressal</h4>
+            <p class="text-slate-500 dark:text-slate-400">Raise issues regarding academic or campus services.</p>
+            <button type="button" onclick="openServiceForm('grievance')" class="mt-2 px-3.5 py-1.5 bg-sky-500 text-white rounded-lg font-bold">Raise Issue</button>
+          </div>
+        </div>
+
+        <form id="serviceFormBox" class="hidden p-4 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-2xl space-y-3" onsubmit="event.preventDefault(); submitStudentApplication();">
+          <h4 id="serviceFormTitle" class="text-xs font-bold text-sky-500">Submit Application</h4>
+          <textarea id="serviceFormText" rows="3" required placeholder="Provide application details here..." class="w-full bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded-xl p-3 text-xs text-slate-800 dark:text-slate-200 focus:outline-none"></textarea>
+          <div class="flex gap-2">
+            <button type="submit" class="px-4 py-2 bg-sky-500 hover:bg-sky-400 text-white rounded-xl text-xs font-bold">Submit</button>
+            <button type="button" onclick="closeServiceForm()" class="px-4 py-2 bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-xl text-xs font-bold">Cancel</button>
+          </div>
+        </form>
+      </div>
+
+      <div id="appTrackerTab" class="student-tab-content hidden space-y-4">
+        <div id="studentAppTrackerList" class="space-y-3 text-xs">
+          <p class="text-slate-400">Loading history...</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FACULTY MODAL -->
+  <div id="facultyModal" class="hidden fixed inset-0 bg-slate-950/70 backdrop-blur-md z-50 flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-[#0b0f19] border border-slate-200 dark:border-slate-800 rounded-3xl w-full max-w-4xl max-h-[90vh] overflow-y-auto p-6 relative shadow-2xl">
+      <button type="button" onclick="toggleModal('facultyModal')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"><i data-lucide="x" class="w-5 h-5"></i></button>
+      <div class="border-b border-slate-200 dark:border-slate-800 pb-4 mb-6">
+        <h2 class="text-lg font-extrabold text-slate-900 dark:text-slate-100 flex items-center gap-2">
+          <i data-lucide="shield-check" class="w-5 h-5 text-sky-500"></i> Faculty & Admin Suite
+        </h2>
+        <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 font-medium">Manage student accounts, publish notices, and compile exam scorecards.</p>
+      </div>
+      <div class="flex gap-2 border-b border-slate-200 dark:border-slate-800 pb-3 mb-6 overflow-x-auto">
+        <button type="button" onclick="switchFacultyTab('createAccountTab')" class="px-3.5 py-1.5 text-xs font-bold bg-sky-500 text-white rounded-xl shadow-sm">Create Student Account</button>
+        <button type="button" onclick="switchFacultyTab('publishNoticeTab')" class="px-3.5 py-1.5 text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-xl">Publish Circular</button>
+        <button type="button" onclick="switchFacultyTab('resultWizardTab')" class="px-3.5 py-1.5 text-xs font-bold bg-amber-500/10 text-amber-500 border border-amber-500/20 rounded-xl">Result Generator Wizard</button>
+      </div>
+
+      <!-- TAB 1: Account Generator -->
+      <div id="createAccountTab" class="faculty-tab-content space-y-4">
+        <form onsubmit="event.preventDefault(); generateStudentAccount();" class="space-y-4">
+          <h3 class="text-xs font-bold text-slate-700 dark:text-slate-200 uppercase tracking-wider">Generate Student Account Credentials</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label for="facStudentName" class="text-xs font-bold text-slate-600 dark:text-slate-400">Student Full Name</label>
+              <input type="text" id="facStudentName" required placeholder="Raunak Kumar Jha" class="w-full mt-1 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-800 dark:text-slate-200 focus:outline-none">
+            </div>
+            <div>
+              <label for="facStudentCourse" class="text-xs font-bold text-slate-600 dark:text-slate-400">Course</label>
+              <select id="facStudentCourse" class="w-full mt-1 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-800 dark:text-slate-300 focus:outline-none">
+                <option value="BCA">BCA (Bachelor of Computer Applications)</option>
+                <option value="BBA">BBA</option>
+                <option value="BSc IT">BSc IT</option>
+              </select>
+            </div>
+            <div>
+              <label for="facStudentSem" class="text-xs font-bold text-slate-600 dark:text-slate-400">Semester</label>
+              <select id="facStudentSem" class="w-full mt-1 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-800 dark:text-slate-300 focus:outline-none">
+                <option value="1">Semester 1</option>
+                <option value="2">Semester 2</option>
+                <option value="3">Semester 3</option>
+                <option value="4">Semester 4</option>
+                <option value="5">Semester 5</option>
+                <option value="6">Semester 6</option>
+              </select>
+            </div>
+          </div>
+          <button type="submit" class="px-4 py-2 bg-sky-500 hover:bg-sky-400 text-white rounded-xl text-xs font-bold shadow-sm">Create Student Credentials</button>
+        </form>
+        <div id="credentialResultCard" class="hidden mt-4 p-4 bg-emerald-50 dark:bg-slate-950 border border-emerald-500/30 rounded-2xl">
+          <p class="text-xs font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5">
+            <i data-lucide="check-circle" class="w-4 h-4"></i> Account created successfully!
+          </p>
+          <div class="mt-3 text-xs space-y-1 font-mono text-slate-700 dark:text-slate-300">
+            <p><strong>Email:</strong> <span id="outEmail" class="text-sky-500 font-bold"></span></p>
+            <p><strong>Temporary Password:</strong> <span id="outTempPass" class="text-amber-500 font-bold"></span></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 2: Notice Publisher -->
+      <div id="publishNoticeTab" class="faculty-tab-content hidden space-y-4">
+        <form onsubmit="event.preventDefault(); publishNotice();" class="space-y-3">
+          <h3 class="text-xs font-bold text-slate-700 dark:text-slate-200 uppercase tracking-wider">Publish Circular / File</h3>
+          <div>
+            <label for="noticeTitle" class="text-xs font-bold text-slate-600 dark:text-slate-400">Notice Title</label>
+            <input type="text" id="noticeTitle" required placeholder="Mid-Semester Examination Form Notice" class="w-full mt-1 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-800 dark:text-slate-200 focus:outline-none">
+          </div>
+          <div>
+            <label for="noticeTargetSem" class="text-xs font-bold text-slate-600 dark:text-slate-400">Target Semester</label>
+            <select id="noticeTargetSem" class="w-full mt-1 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-800 dark:text-slate-300 focus:outline-none">
+              <option value="All Semesters">All Semesters</option>
+              <option value="BCA Sem 1">BCA Sem 1</option>
+              <option value="BCA Sem 3">BCA Sem 3</option>
+              <option value="BCA Sem 5">BCA Sem 5</option>
+            </select>
+          </div>
+          <div>
+            <label for="noticeFile" class="text-xs font-bold text-slate-600 dark:text-slate-400">Upload Attachment (Image / PDF)</label>
+            <input type="file" id="noticeFile" accept="image/*,.pdf" class="w-full mt-1 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl px-3.5 py-2 text-xs text-slate-800 dark:text-slate-200 focus:outline-none file:mr-3 file:py-1 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-sky-500 file:text-white hover:file:bg-sky-400">
+          </div>
+          <div>
+            <label for="noticePdfUrl" class="text-xs font-bold text-slate-600 dark:text-slate-400">Or External Link (Optional)</label>
+            <input type="url" id="noticePdfUrl" placeholder="https://..." class="w-full mt-1 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-800 dark:text-slate-200 focus:outline-none">
+          </div>
+          <button type="submit" id="noticeSubmitBtn" class="px-4 py-2 bg-sky-500 hover:bg-sky-400 text-white rounded-xl text-xs font-bold shadow-sm">Publish Circular</button>
+        </form>
+      </div>
+
+      <!-- TAB 3: Result Wizard -->
+      <div id="resultWizardTab" class="faculty-tab-content hidden space-y-6">
+        <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3 text-xs font-bold">
+          <span id="step1Indicator" class="text-amber-500">1. Exam Setup</span>
+          <span class="text-slate-400">➔</span>
+          <span id="step2Indicator" class="text-slate-400">2. Marks Grid</span>
+          <span class="text-slate-400">➔</span>
+          <span id="step3Indicator" class="text-slate-400">3. Compile</span>
+        </div>
+        <div id="resultStep1" class="space-y-4">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label for="resSemester" class="text-xs font-bold text-slate-600 dark:text-slate-400">Semester</label>
+              <select id="resSemester" class="w-full mt-1 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-800 dark:text-slate-300 focus:outline-none">
+                <option value="BCA 1st Semester">BCA 1st Semester</option>
+                <option value="BCA 3rd Semester">BCA 3rd Semester</option>
+                <option value="BCA 5th Semester">BCA 5th Semester</option>
+              </select>
+            </div>
+            <div>
+              <label for="resSubject" class="text-xs font-bold text-slate-600 dark:text-slate-400">Subject Name</label>
+              <input type="text" id="resSubject" placeholder="Java Programming" class="w-full mt-1 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-800 dark:text-slate-200 focus:outline-none">
+            </div>
+          </div>
+          <button type="button" onclick="goToResultStep2()" class="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-white rounded-xl text-xs font-bold shadow-sm">Proceed to Marks Grid ➔</button>
+        </div>
+        <div id="resultStep2" class="hidden space-y-4">
+          <div class="flex justify-between items-center text-xs text-slate-600 dark:text-slate-400 font-semibold">
+            <span>Pass ≥ 20 (Green) | Fail &lt; 20 (Red) | Absent (Amber)</span>
+            <button type="button" onclick="addResultRow()" class="px-3 py-1 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 rounded-lg border border-slate-300 dark:border-slate-700">+ Add Student</button>
+          </div>
+          <div class="overflow-x-auto border border-slate-200 dark:border-slate-800 rounded-xl">
+            <table class="w-full text-left text-xs">
+              <thead class="bg-slate-100 dark:bg-slate-950 text-slate-600 dark:text-slate-400 border-b border-slate-200 dark:border-slate-800 font-bold">
+                <tr>
+                  <th class="p-3">#</th>
+                  <th class="p-3">Enroll No</th>
+                  <th class="p-3">Name</th>
+                  <th class="p-3">Marks</th>
+                  <th class="p-3">Absent?</th>
+                  <th class="p-3">Status</th>
+                </tr>
+              </thead>
+              <tbody id="resultMarksTableBody" class="divide-y divide-slate-200 dark:divide-slate-800/50"></tbody>
+            </table>
+          </div>
+          <div class="flex gap-3">
+            <button type="button" onclick="goToResultStep1()" class="px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-xl text-xs font-bold">← Back</button>
+            <button type="button" onclick="compileAndPublishResult()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold shadow-sm">Publish Result 🚀</button>
+          </div>
+        </div>
+        <div id="resultStep3" class="hidden text-center py-8 space-y-3">
+          <div class="w-12 h-12 bg-emerald-500/10 text-emerald-500 rounded-full flex items-center justify-center mx-auto text-xl font-bold">✓</div>
+          <h3 class="text-base font-bold text-slate-900 dark:text-slate-100">Result Published to Repository</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADMISSION APPLICATION MODAL -->
+  <div id="admissionModal" class="hidden fixed inset-0 bg-slate-950/70 backdrop-blur-md z-50 flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-[#0b0f19] border border-slate-200 dark:border-slate-800 rounded-3xl w-full max-w-md p-6 relative shadow-2xl">
+      <button type="button" onclick="toggleModal('admissionModal')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"><i data-lucide="x" class="w-5 h-5"></i></button>
+      <form onsubmit="event.preventDefault(); submitAdmissionLead();" class="space-y-4">
+        <h3 class="text-base font-extrabold text-slate-900 dark:text-slate-100">Apply for Admission 2026</h3>
+        <p class="text-xs text-slate-500 dark:text-slate-400 font-medium">Fill details for counseling verification.</p>
+        <div>
+          <label for="admName" class="text-xs font-bold text-slate-700 dark:text-slate-300">Full Name</label>
+          <input type="text" id="admName" required placeholder="Raunak Kumar Jha" class="w-full mt-1 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-800 dark:text-slate-200 focus:outline-none">
+        </div>
+        <div>
+          <label for="admEmail" class="text-xs font-bold text-slate-700 dark:text-slate-300">Email Address</label>
+          <input type="email" id="admEmail" required placeholder="name@example.com" class="w-full mt-1 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-800 dark:text-slate-200 focus:outline-none">
+        </div>
+        <div>
+          <label for="admMobile" class="text-xs font-bold text-slate-700 dark:text-slate-300">Mobile Number</label>
+          <input type="tel" id="admMobile" required placeholder="8102977723" class="w-full mt-1 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-800 dark:text-slate-200 focus:outline-none">
+        </div>
+        <div>
+          <label for="admCourse" class="text-xs font-bold text-slate-700 dark:text-slate-300">Course Preference</label>
+          <select id="admCourse" class="w-full mt-1 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-800 dark:text-slate-300 focus:outline-none">
+            <option value="BCA">BCA (Bachelor of Computer Applications)</option>
+            <option value="BBA">BBA</option>
+            <option value="BSc IT">BSc IT</option>
+          </select>
+        </div>
+        <button type="submit" class="w-full py-2.5 bg-sky-500 hover:bg-sky-400 text-white rounded-xl text-xs font-bold shadow-lg shadow-sky-500/20">Submit Application</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- HELPDESK MODAL -->
+  <div id="helpdeskModal" class="hidden fixed inset-0 bg-slate-950/75 backdrop-blur-md z-50 flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-[#0b0f19] border border-slate-200 dark:border-slate-800 rounded-3xl w-full max-w-lg p-6 relative shadow-2xl max-h-[90vh] overflow-y-auto">
+      <button type="button" onclick="toggleModal('helpdeskModal')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"><i data-lucide="x" class="w-5 h-5"></i></button>
+      <div class="border-b border-slate-200 dark:border-slate-800 pb-4 mb-5">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 bg-sky-500/10 text-sky-500 rounded-xl flex items-center justify-center font-bold">
+            <i data-lucide="headphones" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h3 class="text-base font-extrabold text-slate-900 dark:text-slate-100">CIITM Student Helpdesk</h3>
+            <p class="text-xs text-slate-500 dark:text-slate-400 font-medium">Official support & contact directory</p>
+          </div>
+        </div>
+      </div>
+      <div class="grid grid-cols-2 gap-3 mb-5">
+        <a href="tel:+919304324221" class="p-3 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-2xl flex items-center gap-3">
+          <div class="p-2 bg-sky-500 text-white rounded-lg"><i data-lucide="phone-call" class="w-4 h-4"></i></div>
+          <div>
+            <span class="text-[10px] uppercase font-extrabold text-sky-500">Helpline</span>
+            <p class="text-xs font-bold text-slate-800 dark:text-slate-200">+91 93043 24221</p>
+          </div>
+        </a>
+        <a href="mailto:support@ciitm.in" class="p-3 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-2xl flex items-center gap-3">
+          <div class="p-2 bg-slate-800 text-white rounded-lg"><i data-lucide="mail" class="w-4 h-4"></i></div>
+          <div>
+            <span class="text-[10px] uppercase font-extrabold text-slate-400">Email</span>
+            <p class="text-xs font-bold text-slate-800 dark:text-slate-200">support@ciitm.in</p>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- CLEAN MODERN FOOTER -->
+  <footer class="bg-slate-950 border-t border-slate-800 text-slate-400 text-xs py-8 px-4 mt-12">
+    <div class="max-w-7xl mx-auto text-center space-y-3">
+      <p class="font-semibold text-slate-300">Portal developed by <strong class="text-sky-400 font-extrabold">ABHIVYAKTI INNOVATIONS PRIVATE LIMITED</strong></p>
+      <p class="text-slate-400">Dhanbad - 826001</p>
+      <p class="text-slate-300 font-medium">Contact Support: <a href="tel:+919304324221" class="text-sky-400 hover:underline font-bold">+91 93043 24221</a> | <a href="tel:+916202947884" class="text-sky-400 hover:underline font-bold">+91 62029 47884</a></p>
+      <p class="text-[11px] text-slate-500 pt-2">© 2026 CIITM Dhanbad. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
