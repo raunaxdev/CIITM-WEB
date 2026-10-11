@@ -3,7 +3,7 @@ const SUPABASE_URL = "https://fjiblmcwmdjlzommopml.supabase.co";
 const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZqaWJsbWN3bWRqbHpvbW1vcG1sIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTE2MjE4NDUsImV4cCI6MjEwNzE5Nzg0NX0.WVv4hwuIlkE5QJdeSyUAWT6xZ_YH7_DHICR6xLomIhE";
 
 let _supabase = null;
-let currentServiceType = '';
+let currentServiceType = 'absence';
 
 // ==================== THEME ENGINE ====================
 function initTheme() {
@@ -76,7 +76,7 @@ function toggleModal(id) {
   }
 }
 
-// 1. Fetch Repository & Notices with Upload Metadata
+// 1. Fetch Repository & Notices
 async function loadNoticesAndRepo() {
   const noticeBoard = document.getElementById('noticeBoardList');
   const repoList = document.getElementById('repoList');
@@ -148,7 +148,7 @@ function filterRepository() {
   });
 }
 
-// 3. Category Pill Filter Logic
+// 3. Category Pill Filter
 function filterCategory(category, btnElement) {
   document.querySelectorAll('.category-btn').forEach(btn => {
     btn.classList.remove('bg-sky-900', 'text-white');
@@ -241,7 +241,7 @@ async function updatePassword() {
 
 // 6. Student Services Engine
 function openServiceForm(serviceType) {
-  currentServiceType = serviceType;
+  currentServiceType = serviceType || 'absence';
   const formBox = document.getElementById('serviceFormBox');
   const title = document.getElementById('serviceFormTitle');
   
@@ -530,5 +530,11 @@ async function compileAndPublishResult() {
   if (!error) {
     document.getElementById('resultStep2').classList.add('hidden');
     document.getElementById('resultStep3').classList.remove('hidden');
+    resultRowsCount = 0;
+    const tbody = document.getElementById('resultMarksTableBody');
+    if (tbody) tbody.innerHTML = '';
+    loadNoticesAndRepo();
+  } else {
+    alert("Error publishing result: " + error.message);
   }
 }
