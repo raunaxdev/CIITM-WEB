@@ -80,7 +80,7 @@ function toggleModal(id) {
 function openPortal(portal) {
   const portalUrls = {
     library: 'https://ciitm-lms.vercel.app',
-    attendance: 'https://ciitm-attendance.vercel.app'
+    attendance: 'https://attendencemanager-phi.vercel.app'
   };
   const url = portalUrls[portal];
 
