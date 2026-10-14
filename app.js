@@ -14,6 +14,7 @@ function initTheme() {
     htmlEl.classList.add('dark');
     htmlEl.classList.remove('light');
     updateThemeUI(true);
+
   } else {
     htmlEl.classList.add('light');
     htmlEl.classList.remove('dark');
@@ -74,6 +75,21 @@ function toggleModal(id) {
   if (modal) {
     modal.classList.toggle('hidden');
   }
+}
+
+function openPortal(portal) {
+  const portalUrls = {
+    library: 'https://ciitm-lms.vercel.app',
+    attendance: 'https://ciitm-attendance.vercel.app'
+  };
+  const url = portalUrls[portal];
+
+  if (!url) {
+    console.error(`Unknown portal: ${portal}`);
+    return;
+  }
+
+  window.open(url, '_blank', 'noopener,noreferrer');
 }
 
 // 1. Fetch Repository & Notices with Upload Metadata

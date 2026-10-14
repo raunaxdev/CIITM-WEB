@@ -56,7 +56,7 @@
 
   <!-- CLEAN SLEEK HEADER -->
   <header class="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 sticky top-0 z-40 shadow-sm">
-    <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+    <div class="max-w-7xl mx-auto px-4 min-h-16 py-3 md:py-0 flex flex-wrap items-center justify-between gap-y-3">
       
       <!-- LOGO & TITLE SECTION -->
       <a href="#" class="flex items-center gap-3 group">
@@ -67,7 +67,7 @@
       </a>
 
       <!-- CENTER NAVIGATION LINKS -->
-      <nav class="hidden md:flex items-center gap-6 text-xs font-bold text-slate-600 dark:text-slate-300">
+      <nav class="order-3 w-full md:order-none md:w-auto flex flex-wrap items-center justify-center gap-x-4 gap-y-2 md:gap-6 text-[11px] md:text-xs font-bold text-slate-600 dark:text-slate-300">
         <a href="#" class="text-sky-600 dark:text-sky-400 font-extrabold flex items-center gap-1">
           Home
         </a>
@@ -80,11 +80,17 @@
         <a href="#repository" class="hover:text-sky-600 dark:hover:text-sky-400 transition-colors">
           Digital Repository
         </a>
+        <a href="https://ciitm-lms.vercel.app" target="_blank" rel="noopener noreferrer" class="hover:text-sky-600 dark:hover:text-sky-400 transition-colors">
+          Library LMS
+        </a>
+        <a href="https://ciitm-attendance.vercel.app" target="_blank" rel="noopener noreferrer" class="hover:text-sky-600 dark:hover:text-sky-400 transition-colors">
+          Attendance Portal
+        </a>
       </nav>
 
       <!-- RIGHT ACTION BUTTONS -->
       <div class="flex items-center gap-2.5">
-        <button type="button" onclick="toggleModal('studentModal')" class="px-3.5 py-2 text-xs font-bold bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-100 rounded-xl transition-all border border-slate-200 dark:border-slate-700">
+        <button type="button" onclick="toggleModal('studentModal')" class="hidden sm:block px-3.5 py-2 text-xs font-bold bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-100 rounded-xl transition-all border border-slate-200 dark:border-slate-700">
           Student Portal
         </button>
         <button type="button" onclick="toggleModal('facultyModal')" class="px-3.5 py-2 text-xs font-bold bg-sky-600 hover:bg-sky-500 text-white rounded-xl transition-all shadow-md shadow-sky-600/20">
@@ -141,7 +147,7 @@
     </section>
 
     <!-- BENTO GRID SYSTEM -->
-    <section class="grid grid-cols-1 md:grid-cols-4 gap-5">
+    <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
       
       <!-- BENTO CARD 1: STUDENT PORTAL -->
       <div onclick="toggleModal('studentModal')" class="bento-card cursor-pointer p-6 bg-white dark:bg-[#0b0f19] border border-slate-200/80 dark:border-slate-800/80 rounded-3xl space-y-3 shadow-sm hover:border-sky-500/50">
@@ -182,6 +188,26 @@
         <p class="text-xs text-slate-500 dark:text-slate-400">Admissions, exam cell & ERP technical support contacts.</p>
         <span class="text-[11px] font-bold text-purple-500 inline-flex items-center gap-1 pt-1">Get Help ➔</span>
       </div>
+
+      <!-- BENTO CARD 5: DIGITAL LIBRARY -->
+      <a href="https://ciitm-lms.vercel.app" target="_blank" rel="noopener noreferrer" class="bento-card cursor-pointer p-6 bg-white dark:bg-[#0b0f19] border border-slate-200/80 dark:border-slate-800/80 rounded-3xl space-y-3 shadow-sm hover:border-indigo-500/50">
+        <div class="w-10 h-10 bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 rounded-2xl flex items-center justify-center font-bold">
+          <i data-lucide="book-open" class="w-5 h-5"></i>
+        </div>
+        <h4 class="text-sm font-black text-slate-900 dark:text-slate-100">Digital Library (LMS)</h4>
+        <p class="text-xs text-slate-500 dark:text-slate-400">Search catalog, check issued books, and reserve library resources.</p>
+        <span class="text-[11px] font-bold text-indigo-600 dark:text-indigo-400 inline-flex items-center gap-1 pt-1">Open Library LMS ➔</span>
+      </a>
+
+      <!-- BENTO CARD 6: SMART ATTENDANCE -->
+      <a href="https://ciitm-attendance.vercel.app" target="_blank" rel="noopener noreferrer" class="bento-card cursor-pointer p-6 bg-white dark:bg-[#0b0f19] border border-slate-200/80 dark:border-slate-800/80 rounded-3xl space-y-3 shadow-sm hover:border-sky-500/50">
+        <div class="w-10 h-10 bg-sky-500/10 text-sky-600 dark:text-sky-400 rounded-2xl flex items-center justify-center font-bold">
+          <i data-lucide="calendar-check" class="w-5 h-5"></i>
+        </div>
+        <h4 class="text-sm font-black text-slate-900 dark:text-slate-100">Smart Attendance Portal</h4>
+        <p class="text-xs text-slate-500 dark:text-slate-400">Track subject-wise daily attendance, leave records & percentage status.</p>
+        <span class="text-[11px] font-bold text-sky-600 dark:text-sky-400 inline-flex items-center gap-1 pt-1">View Attendance ➔</span>
+      </a>
 
     </section>
 
@@ -283,6 +309,17 @@
         <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Logged in as: <span id="activeStudentEmail" class="text-sky-500 font-mono font-bold">student@ciitm.in</span></p>
       </div>
 
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
+        <button type="button" onclick="openPortal('library')" class="flex items-center gap-3 p-4 text-left bg-indigo-50 dark:bg-indigo-500/10 border border-indigo-200 dark:border-indigo-500/20 rounded-2xl hover:border-indigo-400 dark:hover:border-indigo-400 transition-colors">
+          <span class="w-10 h-10 shrink-0 bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 rounded-xl flex items-center justify-center"><i data-lucide="book-open" class="w-5 h-5"></i></span>
+          <span class="text-sm font-bold text-slate-800 dark:text-slate-100">My Library Account</span>
+        </button>
+        <button type="button" onclick="openPortal('attendance')" class="flex items-center gap-3 p-4 text-left bg-sky-50 dark:bg-sky-500/10 border border-sky-200 dark:border-sky-500/20 rounded-2xl hover:border-sky-400 dark:hover:border-sky-400 transition-colors">
+          <span class="w-10 h-10 shrink-0 bg-sky-500/10 text-sky-600 dark:text-sky-400 rounded-xl flex items-center justify-center"><i data-lucide="calendar-check" class="w-5 h-5"></i></span>
+          <span class="text-sm font-bold text-slate-800 dark:text-slate-100">View Subject Attendance</span>
+        </button>
+      </div>
+
       <div class="flex gap-2 border-b border-slate-200 dark:border-slate-800 pb-3 mb-6 overflow-x-auto">
         <button type="button" onclick="switchStudentTab('servicesTab')" class="px-3.5 py-1.5 text-xs font-bold bg-sky-500 text-white rounded-xl">Apply for Services</button>
         <button type="button" onclick="switchStudentTab('appTrackerTab')" class="px-3.5 py-1.5 text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 rounded-xl">My Application Status</button>
@@ -334,6 +371,16 @@
           <i data-lucide="shield-check" class="w-5 h-5 text-sky-500"></i> Faculty & Admin Suite
         </h2>
         <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 font-medium">Manage student accounts, publish notices, and compile exam scorecards.</p>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
+        <button type="button" onclick="openPortal('attendance')" class="flex items-center gap-3 p-4 text-left bg-sky-50 dark:bg-sky-500/10 border border-sky-200 dark:border-sky-500/20 rounded-2xl hover:border-sky-400 dark:hover:border-sky-400 transition-colors">
+          <span class="w-10 h-10 shrink-0 bg-sky-500/10 text-sky-600 dark:text-sky-400 rounded-xl flex items-center justify-center"><i data-lucide="calendar-check" class="w-5 h-5"></i></span>
+          <span class="text-sm font-bold text-slate-800 dark:text-slate-100">Mark Class Attendance</span>
+        </button>
+        <button type="button" onclick="openPortal('library')" class="flex items-center gap-3 p-4 text-left bg-indigo-50 dark:bg-indigo-500/10 border border-indigo-200 dark:border-indigo-500/20 rounded-2xl hover:border-indigo-400 dark:hover:border-indigo-400 transition-colors">
+          <span class="w-10 h-10 shrink-0 bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 rounded-xl flex items-center justify-center"><i data-lucide="book-open" class="w-5 h-5"></i></span>
+          <span class="text-sm font-bold text-slate-800 dark:text-slate-100">Manage Library Circulation</span>
+        </button>
       </div>
       <div class="flex gap-2 border-b border-slate-200 dark:border-slate-800 pb-3 mb-6 overflow-x-auto">
         <button type="button" onclick="switchFacultyTab('createAccountTab')" class="px-3.5 py-1.5 text-xs font-bold bg-sky-500 text-white rounded-xl shadow-sm">Create Student Account</button>
